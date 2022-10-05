@@ -22,7 +22,7 @@ const register = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(e);
+        console.table(e);
     }
 
     return (
