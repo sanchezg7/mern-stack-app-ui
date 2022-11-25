@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Layout from "../components/Layout";
 import axios from "axios";
 import { showSuccessMessage, showErrorMessage } from "./register.notification";
+import { API } from "../config";
 
 const register = () => {
 
@@ -34,7 +35,7 @@ const register = () => {
         });
         axios.request({
             // TODO: setup a local proxy to reroute to the address while still having the same route
-            url: "http://localhost:8080/api/register",
+            url: `${API}/api/register`,
             method: "POST",
             data: {
                 name,
@@ -68,13 +69,13 @@ const register = () => {
                 <br />
                 <form onSubmit={handleSubmit}>
                     <div className="form-group">
-                        <input onChange={handleChange} type="text" name="name" className="form-control" placeholder="Name" value={name}/>
+                        <input onChange={handleChange} type="text" name="name" className="form-control" placeholder="Name" value={name} required/>
                     </div>
                     <div className="form-group">
-                        <input onChange={handleChange} type="email" name="email" className="form-control" placeholder="email" value={email}/>
+                        <input onChange={handleChange} type="email" name="email" className="form-control" placeholder="email" value={email} required />
                     </div>
                     <div className="form-group">
-                        <input onChange={handleChange} type="password" name="password" className="form-control" placeholder="password" />
+                        <input onChange={handleChange} type="password" name="password" className="form-control" placeholder="password" required />
                     </div>
                     <div className="form-group">
                         <button className="btn btn-outline-warning">{state.buttonText}</button>
