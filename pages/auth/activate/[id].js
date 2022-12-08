@@ -16,7 +16,7 @@ const ActivateAccount = ({ router }) => {
     });
     // let token = router.query.id;
 
-    const { name, /*token,*/ buttonText, success, error } = state;
+    const { name, token, buttonText, success, error } = state;
 
     useEffect(() => {
         // let token = router.query.id;
