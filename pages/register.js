@@ -35,7 +35,7 @@ const register = () => {
         });
         axios.request({
             // TODO: setup a local proxy to reroute to the address while still having the same route
-            url: `${API}/api/register`,
+            url: `${API}/register`,
             method: "POST",
             data: {
                 name,

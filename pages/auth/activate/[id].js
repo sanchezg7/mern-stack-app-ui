@@ -14,11 +14,13 @@ const ActivateAccount = ({ router }) => {
         success: '',
         error: ''
     });
+    // let token = router.query.id;
 
-    const { name, token, buttonText, success, error } = state;
+    const { name, /*token,*/ buttonText, success, error } = state;
 
     useEffect(() => {
-        let token = router.query.id;
+        // let token = router.query.id;
+        console.log(router.query.id);
         if(token) {
             const { name } = jwt.decode(token);
             setState({...state, name});
@@ -39,22 +41,23 @@ const ActivateAccount = ({ router }) => {
         }
     };
 
-    return (
-        <Layout>
-            <div className="row">
-                <div className="col-md-6 offset-md-3">
-                    <h1>Hello {name}, let's activate your account.</h1>
-                    {success && showSuccessMessage(success)}
-                    {error && showErrorMessage(error)}
-                    <button
-                        className="btn btn-outline-warning btn-block"
-                        onClick={handleSubmit}
-                    >{buttonText}</button>
-                </div>
-
-            </div>
-        </Layout>
-    )
+    // return (
+    //     <Layout>
+    //         <div className="row">
+    //             <div className="col-md-6 offset-md-3">
+    //                 <h1>Hello {name}, let's activate your account.</h1>
+    //                 {success && showSuccessMessage(success)}
+    //                 {error && showErrorMessage(error)}
+    //                 <button
+    //                     className="btn btn-outline-warning btn-block"
+    //                     onClick={handleSubmit}
+    //                 >{buttonText}</button>
+    //             </div>
+    //
+    //         </div>
+    //     </Layout>
+    // )
+    return <div>{JSON.stringify(router)}</div>
 };
 
 export default withRouter(ActivateAccount);
