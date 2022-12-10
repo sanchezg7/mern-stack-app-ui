@@ -27,7 +27,7 @@ const Layout = (props) => {
           </Link>
       </li>
       <li className="nav-item">
-          <Link href="/login">
+          <Link href="/Login">
             <a className="nav-link text-dark" >Login</a>
           </Link>
       </li>
