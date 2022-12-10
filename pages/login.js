@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import axios from "axios";
 import { showSuccessMessage, showErrorMessage } from "./register.notification";
 import { API } from "../config";
+import {authenticate} from "../user/auth";
 
 const Login = () => {
 
@@ -45,10 +46,13 @@ const Login = () => {
         })
             .then(response => {
                 console.log(response);
+                authenticate(response, () => {
+                    Router.push("/");
+                });
             })
             .catch(e => {
                 console.error(e);
-                setState({...state, buttonText: 'Login', error: e.response.data.message})
+                setState({...state, buttonText: 'Login', error: e.data.message})
             });
     }
 
