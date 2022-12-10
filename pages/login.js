@@ -5,12 +5,12 @@ import Layout from "../components/Layout";
 import axios from "axios";
 import { showSuccessMessage, showErrorMessage } from "./register.notification";
 import { API } from "../config";
-import {authenticate} from "../user/auth";
+import { authenticate, isAuth } from "../user/auth";
 
 const Login = () => {
 
     const [state, setState] = useState({
-        email: 'test@gmail.com',
+        email: '',
         password: '',
         error: '',
         success: '',
@@ -18,6 +18,9 @@ const Login = () => {
     });
 
     const { email, password, success, error } = state;
+    useEffect(() => {
+        isAuth() && Router.push("/");
+    },[]);
 
     const handleChange = e => {
         e.preventDefault();
