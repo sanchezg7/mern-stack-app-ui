@@ -52,7 +52,7 @@ const Login = () => {
             })
             .catch(e => {
                 console.error(e);
-                setState({...state, buttonText: 'Login', error: e.data.message})
+                setState({...state, buttonText: 'Login', error: e.response.data.message})
             });
     }
 
