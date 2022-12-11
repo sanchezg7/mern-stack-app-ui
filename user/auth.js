@@ -1,4 +1,5 @@
 import cookie from "js-cookie";
+import Router from "next/router";
 
 export const setCookie = (key, value) => {
   cookie.set(key, value, {
@@ -23,7 +24,7 @@ export const removeLocalStorage = (key) => {
 };
 
 export const getFromLocalStorage = key => {
-  localStorage.getItem(key);
+  return localStorage.getItem(key);
 };
 
 const TOKEN = "token";
@@ -38,10 +39,16 @@ export const authenticate = (response, handleNextFn) => {
 export const isAuth = () => {
   const theCookie = getCookie(TOKEN);
   if(theCookie) {
-      if(localStorage.getItem(USER)){
-          return JSON.parse(localStorage.getItem(USER));
+      if(getFromLocalStorage(USER)){
+          return JSON.parse(getFromLocalStorage(USER));
       } else {
           return false;
       }
   }
+};
+
+export const logout = () => {
+    removeCookie(TOKEN);
+    removeLocalStorage(USER);
+    Router.push("/login");
 };

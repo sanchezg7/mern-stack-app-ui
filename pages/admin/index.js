@@ -1,6 +1,8 @@
+import Layout from "../../components/Layout";
+
 const Admin = () => {
     return (
-        <h1>Admin page</h1>
+        <Layout>Admin page</Layout>
     );
 };
 
