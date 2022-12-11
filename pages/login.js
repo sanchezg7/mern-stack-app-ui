@@ -50,7 +50,9 @@ const Login = () => {
             .then(response => {
                 console.log(response);
                 authenticate(response, () => {
-                    Router.push("/");
+                    isAuth() && isAuth().role === "admin"
+                        ? Router.push("/admin")
+                        : Router.push("/user");
                 });
             })
             .catch(e => {
