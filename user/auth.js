@@ -1,5 +1,6 @@
 import cookie from "js-cookie";
 import Router from "next/router";
+import {useDebugValue} from "react";
 
 export const setCookie = (key, value) => {
   cookie.set(key, value, {
@@ -11,8 +12,30 @@ export const removeCookie = (key) => {
   cookie.remove(key);
 };
 
-export const getCookie = (key) => {
+const getCookieFromBrowser = (key) => {
   return cookie.get(key);
+};
+
+const getCookieFromServer = (key, req) => {
+  if(!req.cookie) {
+      return undefined;
+  }
+  let token = req.headers.cookie.split(";").find(c => c.trim().startsWith(`${key}=`));
+  if(!token){
+      return undefined;
+  }
+  let tokenValue = token.split("=")[1];
+  console.log("getCookieFromServer");
+  return tokenValue;
+};
+
+export const getCookie = (key, req) => {
+    // console.log("getCookie!", req);
+    if(req !== undefined){
+        return getCookieFromServer(key, req);
+    } else {
+        return getCookieFromBrowser(key)
+    }
 };
 
 export const setLocalStorage = (key, value) => {
@@ -27,8 +50,8 @@ export const getFromLocalStorage = key => {
   return localStorage.getItem(key);
 };
 
-const TOKEN = "token";
-const USER = "user";
+export const TOKEN = "token";
+export const USER = "user";
 
 export const authenticate = (response, handleNextFn) => {
     setCookie(TOKEN, response.data.token);
