@@ -13,7 +13,9 @@ export const removeCookie = (key) => {
 };
 
 const getCookieFromBrowser = (key) => {
-  return cookie.get(key);
+    const cookieVal = cookie.get(key);
+    console.log("COOKIE! FROM BROWSER", cookieVal);
+    return cookieVal;
 };
 
 const getCookieFromServer = (key, req) => {
