@@ -14,7 +14,6 @@ export const removeCookie = (key) => {
 
 const getCookieFromBrowser = (key) => {
     const cookieVal = cookie.get(key);
-    console.log("COOKIE! FROM BROWSER", cookieVal);
     return cookieVal;
 };
 
