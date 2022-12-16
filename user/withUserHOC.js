@@ -30,7 +30,8 @@ const withUser = Page => {
             // redirect
             ctx.res.writeHead(302, {
                 Location: "/"
-            })
+            });
+            ctx.res.end();
         } else {
             return {
                 ...(Page.getInitialProps
