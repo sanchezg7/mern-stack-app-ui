@@ -1,9 +1,24 @@
+import Link from "next/link";
 import Layout from "../../components/Layout";
 import withAdmin from "../../user/withAdminHOC";
 
 const Admin = ({ user }) => {
     return (
-        <Layout><div>{JSON.stringify(user)}</div></Layout>
+        <Layout>
+            <h1>Layout Dashboard</h1>
+            <br />
+            <div className="row">
+                <div className="col-md-4">
+                    <ul className="nav flex-column">
+                        <li className="nav-item">
+                            <Link href="/category/create">
+                                <a className="nav-link text-dark" href="">Create Category</a>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </Layout>
     );
 };
 
