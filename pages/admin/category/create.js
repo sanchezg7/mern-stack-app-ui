@@ -56,12 +56,16 @@ const Create = () => {
                           />
                       </div>
                       <div className="form-group">
-                          <label className="text-muted">Image</label>
-                          <input
+                          <label className="btn btn-outline-secondary">
+                          {imageUploadText}
+                            <input
                               className="form-control"
                               type="file"
+                              accept="image/*"
                               onChange={handleChange("image")}
-                          />
+                              hidden
+                            />
+                          </label>
                       </div>
                       <div>
                           <button className="btn btn-outline-warning">
