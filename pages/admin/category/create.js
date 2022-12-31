@@ -1,33 +1,58 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { API } from "../../../config";
 import Layout from "../../../components/Layout";
 import WithAdminHOC from "../../../user/withAdminHOC";
 import { showSuccessMessage, showErrorMessage } from "../../register.notification";
 
-const Create = () => {
-    const [state, setState] = useState({
-        name: "",
-        content: "",
-        error: "",
-        success: "",
-        formData: typeof window !== "undefined" ? new FormData() : "",
-        buttonText: "Create",
-        imageUploadText: "Upload Image"
-    });
+const getDefaultState = () => ({
+    name: "",
+    content: "",
+    error: "",
+    success: "",
+    formData: typeof window !== "undefined" ? new FormData() : "",
+    buttonText: "Create",
+    imageUploadText: "Upload Image",
+});
+
+const Create = ({ token }) => {
+    const [state, setState] = useState(getDefaultState());
 
     const { name, content, success, error, formData, buttonText, imageUploadText } = state;
 
     const handleChange = name => e => {
-        const value = name === "image" ? e.target.files[0] : e.target.value;
-        const imageName = name === "image" ? e.target.files[0] : "Upload image";
+        const newState = {};
+        let value = e.target.value;
+        if(name === "image") {
+            const imageObj = e.target.files[0];
+            newState.imageUploadText = imageObj.name;
+            value = imageObj;
+        }
         formData.set(name, value);
-        setState({ ...state, [name]: value, error: "", success: "", imageUploadText: imageName });
+        setState({ ...state,
+            [name]: value,
+            error: "",
+            ...newState
+        });
     };
 
     const handleSubmit = async e => {
         e.preventDefault();
         setState({ ...state, buttonText: "Creating..." });
-        console.log(formData);
+        try {
+          const response = await axios.post(`${API}/category`, formData, {
+              headers: {
+                  Authorization: `Bearer ${token}`
+              }
+          });
+          setState({...getDefaultState(),
+              buttonText: "Created",
+              imageUploadText: "Upload image",
+              success: `${response.data.name} is created`
+          });
+        } catch (e) {
+            console.error(e);
+        }
     };
 
     return (
@@ -35,6 +60,8 @@ const Create = () => {
           <div className="row">
               <div className="col-md-6 offset-md-3">
                   <h1>Create Category</h1>
+                  {success && showSuccessMessage(success)}
+                  {error && showErrorMessage(error)}
                   <form onSubmit={handleSubmit}>
                       <div className="form-group">
                           <label className="text-muted">Name</label>
