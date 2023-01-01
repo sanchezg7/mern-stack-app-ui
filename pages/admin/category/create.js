@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Resizer from "react-image-file-resizer";
@@ -5,13 +6,14 @@ import { API } from "../../../config";
 import Layout from "../../../components/Layout";
 import WithAdminHOC from "../../../user/withAdminHOC";
 import { showSuccessMessage, showErrorMessage } from "../../register.notification";
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false })
+import 'react-quill/dist/quill.snow.css';
 
 const getDefaultState = () => ({
     name: "",
-    content: "",
+    // content: "",
     error: "",
     success: "",
-    formData: typeof window !== "undefined" ? new FormData() : "",
     image: "", //base64 form data
     buttonText: "Create",
     imageUploadText: "Upload Image",
@@ -19,18 +21,15 @@ const getDefaultState = () => ({
 
 const Create = ({ token }) => {
     const [state, setState] = useState(getDefaultState());
-
-    const { name, content, success, error, image, buttonText, imageUploadText } = state;
+    const [content, setContent] = useState("");
+    const handleContentChange = e => {
+      setContent(e.target.value);
+    };
+    const { name, /*content,*/ success, error, image, buttonText, imageUploadText } = state;
 
     const handleChange = name => e => {
         const newState = {};
         let value = e.target.value;
-        // if(name === "image") {
-        //     const imageObj = e.target.files[0];
-        //     newState.imageUploadText = imageObj.name;
-        //     value = imageObj;
-        // }
-        // formData.set(name, value);
         setState({ ...state,
             [name]: value,
             error: "",
@@ -105,11 +104,13 @@ const Create = ({ token }) => {
                       </div>
                       <div className="form-group">
                           <label className="text-muted">Content</label>
-                          <textarea
-                              className="form-control"
-                              onChange={handleChange("content")}
+                          <ReactQuill
+                              theme="snow"
                               value={content}
-                              required
+                              onChange={handleContentChange}
+                              placeholder="Write something..."
+                              className="pd-5 mb-3"
+                              style={{ border: "1px solid #666 "}}
                           />
                       </div>
                       <div className="form-group">
