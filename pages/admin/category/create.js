@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Resizer from "react-image-file-resizer";
 import { API } from "../../../config";
 import Layout from "../../../components/Layout";
 import WithAdminHOC from "../../../user/withAdminHOC";
@@ -11,6 +12,7 @@ const getDefaultState = () => ({
     error: "",
     success: "",
     formData: typeof window !== "undefined" ? new FormData() : "",
+    image: "", //base64 form data
     buttonText: "Create",
     imageUploadText: "Upload Image",
 });
@@ -34,6 +36,24 @@ const Create = ({ token }) => {
             error: "",
             ...newState
         });
+    };
+
+    const handleImageSelection = e => {
+      const imageObj = e.target.files[0];
+      if(imageObj) {
+          Resizer.imageFileResizer(
+              imageObj,
+              300,
+              300,
+              "JPEG",
+              100,
+              0,
+              data =>{
+                  console.log(data)
+              },
+              "base64"
+          )
+      }
     };
 
     const handleSubmit = async e => {
@@ -89,7 +109,7 @@ const Create = ({ token }) => {
                               className="form-control"
                               type="file"
                               accept="image/*"
-                              onChange={handleChange("image")}
+                              onChange={handleImageSelection}
                               hidden
                             />
                           </label>

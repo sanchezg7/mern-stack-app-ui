@@ -11,7 +11,7 @@ const Admin = ({ user }) => {
                 <div className="col-md-4">
                     <ul className="nav flex-column">
                         <li className="nav-item">
-                            <Link href="/category/create">
+                            <Link href="/admin/category/create">
                                 <a className="nav-link text-dark" href="">Create Category</a>
                             </Link>
                         </li>

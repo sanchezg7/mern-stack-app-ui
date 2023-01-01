@@ -13,14 +13,14 @@ export default function Home({ categories }) {
             <a style={{border: "1px solid red"}} className="bg-light p-3 col-md-4">
               <div>
                 <div className="row">
-                  <div className="col-md-4">
+                  <div className="col-4">
                     <img
                         src={category.image.url}
-                        alt="Category image, unblock s3 access"
+                        alt="Category image"
                         style={{"width": "100px", height: "100px"}}
                     />
                   </div>
-                  <div className="col-md-8"><h3>{category.name}</h3></div>
+                  <div className="col-8"><h3>{category.name}</h3></div>
                 </div>
               </div>
             </a>
@@ -32,7 +32,7 @@ export default function Home({ categories }) {
   return (
       <Layout>
         <div className="row">
-          <h1 className="font-weight-bold">Browse Tutorials/Courses</h1>
+          <h1 className="font-weight-bold col-12">Browse Tutorials/Courses</h1>
           <br />
           <Categories />
         </div>
@@ -47,12 +47,21 @@ Home.getInitialProps = async (ctx) => {
   } else {
     token = getCookie(TOKEN);
   }
-  const response = await axios.get(`${API}/category`, {
-    headers: {
-      Authorization: `Bearer ${token}`
+  try{
+    const response = await axios.get(`${API}/category`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    return {
+      categories: response.data
     }
-  });
-  return {
-    categories: response.data
+
+  }catch (e) {
+    console.log("User unauthenticated, return nothing");
   }
+
+  return {
+    categories: []
+  };
 };
