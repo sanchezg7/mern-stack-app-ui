@@ -20,17 +20,17 @@ const getDefaultState = () => ({
 const Create = ({ token }) => {
     const [state, setState] = useState(getDefaultState());
 
-    const { name, content, success, error, formData, buttonText, imageUploadText } = state;
+    const { name, content, success, error, image, buttonText, imageUploadText } = state;
 
     const handleChange = name => e => {
         const newState = {};
         let value = e.target.value;
-        if(name === "image") {
-            const imageObj = e.target.files[0];
-            newState.imageUploadText = imageObj.name;
-            value = imageObj;
-        }
-        formData.set(name, value);
+        // if(name === "image") {
+        //     const imageObj = e.target.files[0];
+        //     newState.imageUploadText = imageObj.name;
+        //     value = imageObj;
+        // }
+        // formData.set(name, value);
         setState({ ...state,
             [name]: value,
             error: "",
@@ -41,6 +41,8 @@ const Create = ({ token }) => {
     const handleImageSelection = e => {
       const imageObj = e.target.files[0];
       if(imageObj) {
+          const imageObj = e.target.files[0];
+          const imageName = imageObj.name;
           Resizer.imageFileResizer(
               imageObj,
               300,
@@ -49,7 +51,11 @@ const Create = ({ token }) => {
               100,
               0,
               data =>{
-                  console.log(data)
+                  setState({
+                      ...state,
+                      image: data,
+                      imageUploadText: imageName
+                  });
               },
               "base64"
           )
@@ -60,7 +66,11 @@ const Create = ({ token }) => {
         e.preventDefault();
         setState({ ...state, buttonText: "Creating..." });
         try {
-          const response = await axios.post(`${API}/category`, formData, {
+          const response = await axios.post(`${API}/category`, {
+              name,
+              content,
+              image
+          }, {
               headers: {
                   Authorization: `Bearer ${token}`
               }
